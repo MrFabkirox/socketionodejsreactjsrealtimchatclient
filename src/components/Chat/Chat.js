@@ -7,6 +7,7 @@ import './Chat.css';
 import InfoBar from '../InfoBar/InfoBar'
 import Input from '../Input/Input'
 import Messages from '../Messages/Messages'
+import TextContainer from '../TextContainer/TextContainer'
 
 let socket;
 
@@ -24,7 +25,7 @@ const Chat = ({ location }) => {
     console.log('________location.search [%o]',location.search);
     // console.log('________data [%o]',data);
 
-    socket = io(ENDPOINT );
+    socket = io(ENDPOINT);
 
     setName(name);
     setRoom(room);
@@ -34,8 +35,11 @@ const Chat = ({ location }) => {
     //   console.log('________socket [%o]', socket);
     //   alert(error);
     // });
-    socket.emit('join', { name, room }, () => {
-      console.log('________socket [%o]', socket);
+    socket.emit('join', { name, room }, ({ error }) => {
+      console.log('________socket endpoint [%o]', socket);
+      if(error) {
+        console.log('________error [%o]', error);
+      };
     });
 
     return () => {
@@ -76,8 +80,8 @@ const Chat = ({ location }) => {
         <Messages messages={messages} name={name} />
         <Input message={message} setMessage={setMessage} sendMessage={sendMessage} />
       </div>
-//       // loop through to displa users
-//       <TextContainer users={users} />
+
+
     </div>
   )
 }
